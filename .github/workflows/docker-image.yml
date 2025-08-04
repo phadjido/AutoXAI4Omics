@@ -45,9 +45,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable=${{ github.base_ref == 'main' }}
-            type=semver,pattern={{version}},value=${{ env.VER }},enable=${{ github.base_ref == 'main' }}
-            type=raw,value=dev,enable=${{ (github.base_ref == 'dev') }}
+            type=raw,value=latest,enable=${{ github.ref_name == 'main' }}
+            type=semver,pattern={{version}},value=${{ env.VER }},enable=${{ github.ref_name == 'main' }}
+            type=raw,value=dev,enable=${{ (github.ref_name == 'dev') }}
 
       # js: added in for multi arch building
       - name: Set up QEMU

@@ -16,6 +16,7 @@ from numpy import ndarray
 from omics import R_replacement as rrep
 import joblib
 import pandas as pd
+from pathlib import Path
 
 
 def get_data_tabular(
@@ -43,7 +44,7 @@ def get_data_tabular(
 
     # add the output file name from config_dict that is required
     if config_dict["tabular"]["output_file_tab"] is not None:
-        output_file = config_dict["tabular"]["output_file_tab"]
+        output_file = str(config_dict["tabular"]["output_file_tab"].with_suffix(""))
         print("Output file: " + output_file)
     else:
         output_file = "processed_tabular_data"
@@ -52,7 +53,7 @@ def get_data_tabular(
 
     # add metadata output file from config_dict that is required
     if config_dict["tabular"]["output_metadata"] is not None:
-        metout_file = config_dict["tabular"]["output_metadata"]
+        metout_file = str(config_dict["tabular"]["output_metadata"].with_suffix(""))
     else:
         metout_file = "processed_tabular_metadata"
 
@@ -85,7 +86,7 @@ def get_data_tabular(
     if (config_dict["data"][metafile] != "") and (
         config_dict["data"][metafile] is not None
     ):
-        metadata = pd.read_csv(config_dict["data"][metafile], index_col=0)
+        metadata = pd.read_csv(config_dict["data"][metafile], index_col=0).sort_index()
         mask = metadata.index.isin(filtered_data.index)
         filtered_metadata = metadata.loc[mask]
         filtered_metadata.to_csv(metout_file)
@@ -93,7 +94,9 @@ def get_data_tabular(
 
     else:
         file = "file_path" + ("_holdout_data" if holdout else "")
-        unfiltered_data = pd.read_csv(config_dict["data"][file], index_col=0)
+        unfiltered_data = pd.read_csv(
+            config_dict["data"][file], index_col=0
+        ).sort_index()
         target_y = unfiltered_data.loc[
             config_dict["data"]["target"]
         ]  # need loc because target in ge data is ROW not column (as in metadata)
@@ -149,7 +152,9 @@ def get_data_tabular_trained(
         if (config_dict["data"][metafile] != "") and (
             config_dict["data"][metafile] is not None
         ):
-            metadata = pd.read_csv(config_dict["data"][metafile], index_col=0)
+            metadata = pd.read_csv(
+                config_dict["data"][metafile], index_col=0
+            ).sort_index()
             mask = metadata.index.isin(filtered_data.index)
             filtered_metadata = metadata.loc[mask]
             filtered_metadata.to_csv(metout_file)
@@ -157,7 +162,9 @@ def get_data_tabular_trained(
 
         else:
             file = "file_path" + ("_holdout_data" if holdout else "")
-            unfiltered_data = pd.read_csv(config_dict["data"][file], index_col=0)
+            unfiltered_data = pd.read_csv(
+                config_dict["data"][file], index_col=0
+            ).sort_index()
             target_y = unfiltered_data.loc[
                 config_dict["data"]["target"]
             ]  # need loc because target in ge data is ROW not column (as in metadata)

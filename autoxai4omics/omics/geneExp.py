@@ -16,6 +16,7 @@ from numpy import ndarray
 from omics import R_replacement as rrep
 import joblib
 import pandas as pd
+from pathlib import Path
 
 
 def get_data_gene_expression(
@@ -43,7 +44,9 @@ def get_data_gene_expression(
 
     # add the output file name from config_dict that is required
     if config_dict["gene_expression"]["output_file_ge"] is not None:
-        output_file = config_dict["gene_expression"]["output_file_ge"]
+        output_file = str(
+            config_dict["gene_expression"]["output_file_ge"].with_suffix("")
+        )
         print("Output file: " + output_file)
     else:
         output_file = "processed_gene_expression_data"
@@ -51,7 +54,9 @@ def get_data_gene_expression(
 
     # add metadata output file from config_dict that is required
     if config_dict["gene_expression"]["output_metadata"] is not None:
-        metout_file = config_dict["gene_expression"]["output_metadata"]
+        metout_file = str(
+            config_dict["gene_expression"]["output_metadata"].with_suffix("")
+        )
     else:
         metout_file = "processed_gene_expression_metadata"
     metout_file += "_holdout" if holdout else ""
@@ -125,7 +130,9 @@ def get_data_gene_expression(
     if (config_dict["data"][metafile] != "") and (
         config_dict["data"][metafile] is not None
     ):
-        metadata = pd.read_csv(config_dict["data"]["metadata_file"], index_col=0)
+        metadata = pd.read_csv(
+            config_dict["data"]["metadata_file"], index_col=0
+        ).sort_index()
         mask = metadata.index.isin(filtered_data.index)
         filtered_metadata = metadata.loc[mask]
         filtered_metadata.to_csv(metout_file)
@@ -133,7 +140,9 @@ def get_data_gene_expression(
 
     else:
         file = "file_path" + ("_holdout_data" if holdout else "")
-        unfiltered_data = pd.read_csv(config_dict["data"][file], index_col=0)
+        unfiltered_data = pd.read_csv(
+            config_dict["data"][file], index_col=0
+        ).sort_index()
         target_y = unfiltered_data.loc[
             config_dict["data"]["target"]
         ]  # need loc because target in ge data is ROW not column (as in metadata)
@@ -193,7 +202,9 @@ def get_data_gene_expression_trained(
         if (config_dict["data"][metafile] != "") and (
             config_dict["data"][metafile] is not None
         ):
-            metadata = pd.read_csv(config_dict["data"][metafile], index_col=0)
+            metadata = pd.read_csv(
+                config_dict["data"][metafile], index_col=0
+            ).sort_index()
             mask = metadata.index.isin(filtered_data.index)
             filtered_metadata = metadata.loc[mask]
             filtered_metadata.to_csv(metout_file)
@@ -201,7 +212,9 @@ def get_data_gene_expression_trained(
 
         else:
             file = "file_path" + ("_holdout_data" if holdout else "")
-            unfiltered_data = pd.read_csv(config_dict["data"][file], index_col=0)
+            unfiltered_data = pd.read_csv(
+                config_dict["data"][file], index_col=0
+            ).sort_index()
             target_y = unfiltered_data.loc[
                 config_dict["data"]["target"]
             ]  # need loc because target in ge data is ROW not column (as in metadata)

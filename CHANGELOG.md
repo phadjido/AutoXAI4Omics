@@ -1,12 +1,12 @@
 <!--
  Copyright 2024 IBM Corp.
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,34 @@
 
 Change log for the codebase. Initialised from the developments following version `V0.11.3`
 
-## [unreleased] - 2025-05-09
+## [v1.3.0] - 2025-08-01
+
+### Added
+
+- Added: test case for variance threshold
+- Added: `.env' file to set some required env vars
+- Added: extra & missing cicd packages
+
+### Changed
+
+- changed: dockerfile to only install main dependencies
+- changed: streamlined imports
+- changed: updated as many packages as possible
+- Changed: updated pre-commit-config
+
+### Fixed
+
+- fix: omic path parsing bug
+- fix: plotting bug arising from api change
+- fix: correct file permissions
+- fix: cicd to build image and push to the `ghcr.io`
+- fix: shuffle bug
+
+### Security
+
+- security: updated packages to resolve dependabot alerts
+
+## [v1.2.0] - 2025-05-09
 
 ### Changed
 
@@ -186,6 +213,7 @@ Change log for the codebase. Initialised from the developments following version
 - Detect secrets added
 - Upgraded python base image from `3.9.14` to `3.9.18` for additional security fixes
 
+[V1.2.0]: https://github.com/IBM/AutoXAI4Omics/releases/tag/V1.2.0
 [V1.1.1]: https://github.com/IBM/AutoXAI4Omics/releases/tag/V1.1.1
 [V1.1.0]: https://github.com/IBM/AutoXAI4Omics/releases/tag/V1.1.0
 [V1.0.1]: https://github.com/IBM/AutoXAI4Omics/releases/tag/V1.0.1
